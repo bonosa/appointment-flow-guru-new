@@ -60,9 +60,9 @@ export default function SocialMediaSection() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <p className="text-2xl font-bold text-gray-900">{stats.twitter.followers}</p>
-                <p className="text-sm text-gray-600">Followers</p>
-                <p className="text-sm text-green-600 font-medium">{stats.twitter.engagement} engagement</p>
+                <p className="text-2xl font-bold text-gray-900">Connect</p>
+                <p className="text-sm text-gray-600">Your Account</p>
+                <p className="text-sm text-green-600 font-medium">Auto-filled stats</p>
               </div>
             </CardContent>
           </Card>
@@ -79,9 +79,9 @@ export default function SocialMediaSection() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <p className="text-2xl font-bold text-gray-900">{stats.linkedin.followers}</p>
-                <p className="text-sm text-gray-600">Followers</p>
-                <p className="text-sm text-green-600 font-medium">{stats.linkedin.engagement} engagement</p>
+                <p className="text-2xl font-bold text-gray-900">Connect</p>
+                <p className="text-sm text-gray-600">Your Account</p>
+                <p className="text-sm text-green-600 font-medium">Auto-filled stats</p>
               </div>
             </CardContent>
           </Card>
@@ -98,9 +98,9 @@ export default function SocialMediaSection() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <p className="text-2xl font-bold text-gray-900">{stats.instagram.followers}</p>
-                <p className="text-sm text-gray-600">Followers</p>
-                <p className="text-sm text-green-600 font-medium">{stats.instagram.engagement} engagement</p>
+                <p className="text-2xl font-bold text-gray-900">Connect</p>
+                <p className="text-sm text-gray-600">Your Account</p>
+                <p className="text-sm text-green-600 font-medium">Auto-filled stats</p>
               </div>
             </CardContent>
           </Card>
@@ -156,7 +156,7 @@ export default function SocialMediaSection() {
                             const platformUrls = {
                               twitter: 'https://twitter.com/bonosaroj',
                               linkedin: 'https://www.linkedin.com/in/saroj-bon/',
-                              instagram: 'https://www.instagram.com/sarojbon/'
+                              instagram: 'https://www.instagram.com/bonosa11/'
                             };
                             const url = platformUrls[post.platform];
                             if (url) {
