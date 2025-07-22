@@ -19,15 +19,12 @@ interface SocialStats {
 export const useSocialMedia = () => {
   const [posts, setPosts] = React.useState<SocialPost[]>([]);
   
-  // Mock stats (can be updated manually)
-  const mockStats: SocialStats = {
-    twitter: { followers: '2.4K', posts: '156', engagement: '8.2%' },
-    linkedin: { followers: '1.8K', posts: '89', engagement: '12.5%' },
-    instagram: { followers: '3.1K', posts: '234', engagement: '6.8%' }
-  };
-  
-  // Initialize with mock stats instead of null
-  const [stats, setStats] = React.useState<SocialStats>(mockStats);
+  // Dynamic stats based on actual posts
+  const [stats, setStats] = React.useState<SocialStats>({
+    twitter: { followers: 'Connect', posts: '0', engagement: 'Auto-filled' },
+    linkedin: { followers: 'Connect', posts: '0', engagement: 'Auto-filled' },
+    instagram: { followers: 'Connect', posts: '0', engagement: 'Auto-filled' }
+  });
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState<string | null>(null);
 
@@ -60,12 +57,25 @@ export const useSocialMedia = () => {
     }
   };
 
-  // Fetch Twitter posts using Nitter RSS (no API key needed)
+  // Fetch Twitter posts using RSS
   const fetchTwitterPosts = async (): Promise<SocialPost[]> => {
-          try {
-        // Use Nitter RSS feed (replace with your Twitter username)
-        const nitterRSS = 'https://nitter.net/bonosaroj/rss';
-        const items = await fetchRSSFeed(nitterRSS);
+    try {
+      // Try multiple RSS sources for Twitter
+      const rssSources = [
+        'https://nitter.net/bonosaroj/rss',
+        'https://nitter.net/sarojbon/rss',
+        'https://rsshub.app/twitter/user/bonosaroj'
+      ];
+      
+      let items: any[] = [];
+      for (const rssUrl of rssSources) {
+        try {
+          items = await fetchRSSFeed(rssUrl);
+          if (items.length > 0) break; // Use first successful source
+        } catch (e) {
+          console.log(`RSS source failed: ${rssUrl}`);
+        }
+      }
       
       return items.slice(0, 3).map(item => ({
         id: item.id,
@@ -74,7 +84,7 @@ export const useSocialMedia = () => {
         engagement: `${Math.floor(Math.random() * 200) + 50} likes, ${Math.floor(Math.random() * 50) + 10} retweets`,
         date: new Date(item.date).toLocaleDateString(),
         url: item.url,
-        author: item.author
+        author: item.author || 'Saroj Bon'
       }));
     } catch (error) {
       console.error('Twitter fetch error:', error);
@@ -82,67 +92,70 @@ export const useSocialMedia = () => {
     }
   };
 
-  // Fetch LinkedIn posts using company RSS
+  // Fetch LinkedIn posts using RSS
   const fetchLinkedInPosts = async (): Promise<SocialPost[]> => {
-          try {
-        // LinkedIn company page RSS (if available)
-        const linkedinRSS = 'https://www.linkedin.com/in/saroj-bon/feed/';
-        const items = await fetchRSSFeed(linkedinRSS);
+    try {
+      // Try multiple RSS sources for LinkedIn
+      const rssSources = [
+        'https://rsshub.app/linkedin/posts/saroj-bon',
+        'https://www.linkedin.com/in/saroj-bon/feed/',
+        'https://rsshub.app/linkedin/user/saroj-bon'
+      ];
       
-              return items.slice(0, 2).map(item => ({
-          id: item.id,
-          platform: 'linkedin' as const,
-          content: item.content || item.title,
-          engagement: `${Math.floor(Math.random() * 100) + 20} reactions, ${Math.floor(Math.random() * 20) + 5} comments`,
-          date: new Date(item.date).toLocaleDateString(),
-          url: item.url,
-          author: 'Saroj Bon'
-        }));
+      let items: any[] = [];
+      for (const rssUrl of rssSources) {
+        try {
+          items = await fetchRSSFeed(rssUrl);
+          if (items.length > 0) break; // Use first successful source
+        } catch (e) {
+          console.log(`RSS source failed: ${rssUrl}`);
+        }
+      }
+      
+      return items.slice(0, 2).map(item => ({
+        id: item.id,
+        platform: 'linkedin' as const,
+        content: item.content || item.title,
+        engagement: `${Math.floor(Math.random() * 100) + 20} reactions, ${Math.floor(Math.random() * 20) + 5} comments`,
+        date: new Date(item.date).toLocaleDateString(),
+        url: item.url,
+        author: 'Saroj Bon'
+      }));
     } catch (error) {
       console.error('LinkedIn fetch error:', error);
       return [];
     }
   };
 
-  // Fetch Instagram posts using RapidAPI (free tier available)
+  // Fetch Instagram posts using RSS
   const fetchInstagramPosts = async (): Promise<SocialPost[]> => {
     try {
-      // Option 1: Use RapidAPI Instagram API (requires free API key)
-      const rapidApiKey = import.meta.env.VITE_RAPIDAPI_KEY;
-      if (rapidApiKey) {
-        const response = await fetch('https://instagram-bulk-profile-scrapper.p.rapidapi.com/clients/api/ig/media_by_username', {
-          method: 'GET',
-          headers: {
-            'X-RapidAPI-Key': rapidApiKey,
-            'X-RapidAPI-Host': 'instagram-bulk-profile-scrapper.p.rapidapi.com'
-          }
-        });
-        
-        const data = await response.json();
-        if (data.response && data.response.posts) {
-          return data.response.posts.slice(0, 2).map((post: any, index: number) => ({
-            id: `ig-${Date.now()}-${index}`,
-            platform: 'instagram' as const,
-            content: post.caption || 'Check out our latest post!',
-            engagement: `${post.likes || Math.floor(Math.random() * 300) + 100} likes, ${post.comments || Math.floor(Math.random() * 30) + 5} comments`,
-            date: new Date(post.timestamp * 1000).toLocaleDateString(),
-            url: post.url,
-            author: 'Smart Booking Pro'
-          }));
+      // Try multiple RSS sources for Instagram
+      const rssSources = [
+        'https://rsshub.app/instagram/user/bonosa11',
+        'https://rsshub.app/instagram/user/sarojbon',
+        'https://nitter.net/bonosa11/rss' // Fallback to Twitter if Instagram fails
+      ];
+      
+      let items: any[] = [];
+      for (const rssUrl of rssSources) {
+        try {
+          items = await fetchRSSFeed(rssUrl);
+          if (items.length > 0) break; // Use first successful source
+        } catch (e) {
+          console.log(`RSS source failed: ${rssUrl}`);
         }
       }
       
-             // Fallback: Generate mock Instagram posts
-       return [
-         {
-           id: `ig-${Date.now()}-1`,
-           platform: 'instagram' as const,
-           content: "Behind the scenes: Our Claude AI development process ✨ See how we're revolutionizing appointment booking with intelligent automation! #AI #Innovation #SmartBooking",
-           engagement: `${Math.floor(Math.random() * 300) + 100} likes, ${Math.floor(Math.random() * 30) + 5} comments`,
-           date: new Date().toLocaleDateString(),
-           author: 'Saroj Bon'
-         }
-       ];
+      return items.slice(0, 2).map(item => ({
+        id: item.id,
+        platform: 'instagram' as const,
+        content: item.content || item.title,
+        engagement: `${Math.floor(Math.random() * 300) + 50} likes, ${Math.floor(Math.random() * 30) + 5} comments`,
+        date: new Date(item.date).toLocaleDateString(),
+        url: item.url,
+        author: 'Saroj Bon'
+      }));
     } catch (error) {
       console.error('Instagram fetch error:', error);
       return [];
@@ -166,7 +179,29 @@ export const useSocialMedia = () => {
         .slice(0, 6);
 
       setPosts(allPosts);
-      setStats(mockStats);
+      
+      // Update stats based on actual posts
+      const twitterCount = twitterPosts.length;
+      const linkedinCount = linkedinPosts.length;
+      const instagramCount = instagramPosts.length;
+      
+      setStats({
+        twitter: { 
+          followers: 'Connect', 
+          posts: twitterCount.toString(), 
+          engagement: twitterCount > 0 ? 'Active' : 'Connect' 
+        },
+        linkedin: { 
+          followers: 'Connect', 
+          posts: linkedinCount.toString(), 
+          engagement: linkedinCount > 0 ? 'Active' : 'Connect' 
+        },
+        instagram: { 
+          followers: 'Connect', 
+          posts: instagramCount.toString(), 
+          engagement: instagramCount > 0 ? 'Active' : 'Connect' 
+        }
+      });
       
       // Save to localStorage for caching
       localStorage.setItem('socialMediaPosts', JSON.stringify(allPosts));

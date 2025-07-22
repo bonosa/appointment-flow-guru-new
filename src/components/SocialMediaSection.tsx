@@ -129,51 +129,83 @@ export default function SocialMediaSection() {
             </div>
           )}
           
-          {posts?.map((post, index) => {
-            const IconComponent = getPlatformIcon(post.platform);
-            const colorClass = getPlatformColor(post.platform);
-            return (
-              <Card key={index} className="hover:shadow-lg transition-shadow">
-                <CardContent className="p-6">
-                  <div className="flex items-start space-x-4">
-                    <div className={`p-3 rounded-full bg-gray-100 ${colorClass}`}>
-                      <IconComponent className="h-6 w-6" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between mb-2">
-                        <h4 className="font-semibold text-gray-900">{getPlatformName(post.platform)}</h4>
-                        <span className="text-sm text-gray-500">{post.date}</span>
+          {posts && posts.length > 0 ? (
+            posts.map((post, index) => {
+              const IconComponent = getPlatformIcon(post.platform);
+              const colorClass = getPlatformColor(post.platform);
+              return (
+                <Card key={index} className="hover:shadow-lg transition-shadow">
+                  <CardContent className="p-6">
+                    <div className="flex items-start space-x-4">
+                      <div className={`p-3 rounded-full bg-gray-100 ${colorClass}`}>
+                        <IconComponent className="h-6 w-6" />
                       </div>
-                      <p className="text-gray-700 mb-3 leading-relaxed">
-                        {post.content}
-                      </p>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm text-gray-600">{post.engagement}</span>
-                        <Button 
-                          variant="outline" 
-                          size="sm"
-                          onClick={() => {
-                            const platformUrls = {
-                              twitter: 'https://twitter.com/bonosaroj',
-                              linkedin: 'https://www.linkedin.com/in/saroj-bon/',
-                              instagram: 'https://www.instagram.com/bonosa11/'
-                            };
-                            const url = platformUrls[post.platform];
-                            if (url) {
-                              window.open(url, '_blank');
-                            }
-                          }}
-                          className="hover:bg-purple-50 hover:border-purple-300 hover:text-purple-700"
-                        >
-                          View Post
-                        </Button>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between mb-2">
+                          <h4 className="font-semibold text-gray-900">{getPlatformName(post.platform)}</h4>
+                          <span className="text-sm text-gray-500">{post.date}</span>
+                        </div>
+                        <p className="text-gray-700 mb-3 leading-relaxed">
+                          {post.content}
+                        </p>
+                        <div className="flex items-center justify-between">
+                          <span className="text-sm text-gray-600">{post.engagement}</span>
+                          <Button 
+                            variant="outline" 
+                            size="sm"
+                            onClick={() => {
+                              const platformUrls = {
+                                twitter: 'https://twitter.com/bonosaroj',
+                                linkedin: 'https://www.linkedin.com/in/saroj-bon/',
+                                instagram: 'https://www.instagram.com/bonosa11/'
+                              };
+                              const url = platformUrls[post.platform];
+                              if (url) {
+                                window.open(url, '_blank');
+                              }
+                            }}
+                            className="hover:bg-purple-50 hover:border-purple-300 hover:text-purple-700"
+                          >
+                            View Post
+                          </Button>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
+                  </CardContent>
+                </Card>
+              );
+            })
+          ) : (
+            <div className="text-center py-12">
+              <div className="bg-gray-50 rounded-lg p-8">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">No Social Media Posts Yet</h3>
+                <p className="text-gray-600 mb-4">Connect your social media accounts to see your posts here.</p>
+                <div className="flex justify-center space-x-4">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => window.open('https://twitter.com/login', '_blank')}
+                  >
+                    <Twitter className="mr-2 h-4 w-4" />
+                    Connect Twitter
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => window.open('https://www.linkedin.com/login', '_blank')}
+                  >
+                    <Linkedin className="mr-2 h-4 w-4" />
+                    Connect LinkedIn
+                  </Button>
+                  <Button 
+                    variant="outline" 
+                    onClick={() => window.open('https://www.instagram.com/accounts/login/', '_blank')}
+                  >
+                    <Instagram className="mr-2 h-4 w-4" />
+                    Connect Instagram
+                  </Button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Call to Action */}

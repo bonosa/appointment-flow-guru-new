@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { CalendarIcon, Clock, Users, Zap, Star, Sparkles, X, CheckCircle, Shield, Smartphone, Globe, Headphones } from 'lucide-react';
 import { useState } from 'react';
+import { useBookingStats } from '@/hooks/useBookingStats';
 
 interface HeroSectionProps {
   onBookNow: () => void;
@@ -8,6 +9,7 @@ interface HeroSectionProps {
 
 export default function HeroSection({ onBookNow }: HeroSectionProps) {
   const [showFeaturesModal, setShowFeaturesModal] = useState(false);
+  const { stats, loading } = useBookingStats();
   return (
     <div className="min-h-screen relative overflow-hidden">
       {/* Animated background elements */}
@@ -98,9 +100,9 @@ export default function HeroSection({ onBookNow }: HeroSectionProps) {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
               <div className="group hover:scale-110 transition-all duration-300">
                 <div className="text-5xl md:text-6xl font-black gradient-text mb-3 group-hover:shadow-neon transition-all duration-300">
-                  10k+
+                  {loading ? '...' : stats.totalBookings}
                 </div>
-                <p className="text-muted-foreground text-lg">Appointments Scheduled</p>
+                <p className="text-muted-foreground text-lg">Bookings Made</p>
               </div>
               <div className="group hover:scale-110 transition-all duration-300" style={{ animationDelay: '0.2s' }}>
                 <div className="text-5xl md:text-6xl font-black gradient-text mb-3 group-hover:shadow-neon transition-all duration-300">
