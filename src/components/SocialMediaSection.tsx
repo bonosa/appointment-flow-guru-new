@@ -60,9 +60,9 @@ export default function SocialMediaSection() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <p className="text-2xl font-bold text-gray-900">Connect</p>
-                <p className="text-sm text-gray-600">Your Account</p>
-                <p className="text-sm text-green-600 font-medium">Auto-filled stats</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.twitter.followers}</p>
+                <p className="text-sm text-gray-600">{stats.twitter.posts} Posts</p>
+                <p className="text-sm text-green-600 font-medium">{stats.twitter.engagement}</p>
               </div>
             </CardContent>
           </Card>
@@ -79,9 +79,9 @@ export default function SocialMediaSection() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <p className="text-2xl font-bold text-gray-900">Connect</p>
-                <p className="text-sm text-gray-600">Your Account</p>
-                <p className="text-sm text-green-600 font-medium">Auto-filled stats</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.linkedin.followers}</p>
+                <p className="text-sm text-gray-600">{stats.linkedin.posts} Posts</p>
+                <p className="text-sm text-green-600 font-medium">{stats.linkedin.engagement}</p>
               </div>
             </CardContent>
           </Card>
@@ -98,9 +98,9 @@ export default function SocialMediaSection() {
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
-                <p className="text-2xl font-bold text-gray-900">Connect</p>
-                <p className="text-sm text-gray-600">Your Account</p>
-                <p className="text-sm text-green-600 font-medium">Auto-filled stats</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.instagram.followers}</p>
+                <p className="text-sm text-gray-600">{stats.instagram.posts} Posts</p>
+                <p className="text-sm text-green-600 font-medium">{stats.instagram.engagement}</p>
               </div>
             </CardContent>
           </Card>
